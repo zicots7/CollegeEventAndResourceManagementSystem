@@ -1,0 +1,79 @@
+{% extends 'Base.html' %}
+
+{% block title %}
+<title>Registrations</title>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4 mt-5 pt-4">
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold mb-0">Registrations List</h2>
+  </div>
+  <!-- Table Card -->
+  <div class="card shadow-sm">
+    <div class="card-body p-0">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-dark">
+          <tr>
+            <th>#</th>
+            <th>Student Name</th>
+            <th>Student Department</th>
+            <th>Event Name</th>
+            <th>Event Type</th>
+            <th>Event Department</th>
+            <th>Event Date</th>
+            <th>Venue Name</th>
+            <th>Registered At</th>
+            <th>Attended</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for student in registration %}
+          <tr>
+            <td class="text-muted">{{ forloop.counter }}</td>
+            <td class="fw-semibold">{{ student.student.first_name }} {{ student.student.last_name }}</td>
+            <td class="fw-semibold">{{ student.student.department }}</td>
+            <td class="fw-semibold">{{ student.event.title }}</td>
+            <td class="fw-semibold">{{ student.event.type }}</td>
+            <td class="fw-semibold">{{ student.event.department }}</td>
+            <td class="fw-semibold">{{ student.event.date }}</td>
+            <td class="fw-semibold">{{ student.event.venue }}</td>
+            <td class="text-muted">{{ student.registered_at }}</td>
+            <td class="text-muted">{{ student.attended }}
+             <form action="{% url 'AttendedEvent' student.id %}" method="POST">
+              {% csrf_token %}
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox"
+             onChange="this.form.submit()"
+             {% if student.attended %}
+             checked
+             {% endif %}
+             {% if student.attended %}
+              <label class="form-check-label">Attended</label>
+              {% elif not student.attended %}
+              <label class="form-check-label"> Not Attended</label>
+              {% endif %}
+              </div>
+          </form>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="7" class="text-center text-muted py-5">
+              <p class="mb-1 fs-5">No Students found</p>
+              <small>No student Found</small>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Count -->
+  <p class="text-muted small mt-2">Total: {{ registration|length }} Student(s)</p>
+
+</div>
+
+{% endblock %}

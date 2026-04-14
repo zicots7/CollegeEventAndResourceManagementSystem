@@ -1,0 +1,107 @@
+{% extends 'Base.html' %}
+{% block title %}
+<title>Resources</title>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4 mt-5 pt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold mb-0">Resources</h2>
+     {% if not request.user.role == 'Student' %}
+    <a href="{% url 'resourceAdd' %}" class="btn btn-primary">+ Add Resource</a>
+    {% endif %}
+  </div>
+  <div class="card shadow-sm">
+    <div class="card-body p-0">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-dark">
+          <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Subject</th>
+            <th>Category</th>
+            <th>Uploaded At</th>
+            <th>Department</th>
+            <th>Resource Info</th>
+            <th>Uploaded By</th>
+            <th>Download Count</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for resource in resources %}
+          <tr>
+            <td class="text-muted">{{ forloop.counter }}</td>
+            <td class="fw-semibold">{{ resource.title }}</td>
+            <td class="fw-semibold">{{ resource.description }} </td>
+            <td class="fw-semibold">{{ resource.subject }}</td>
+            <td class="fw-semibold">
+                {{ resource.category }}
+                <br>
+                <span class="badge bg-info text-dark">{{ resource.resource_type }}</span>
+            </td>
+            <td class="fw-semibold">{{ resource.uploaded_at }}</td>
+            <td class="fw-semibold">{{ resource.department }}</td><td class="small">
+    {# Check if there is a 'details' key inside our mongo_info #}
+    {% if resource.mongo_info.details %}
+        {% with d=resource.mongo_info.details %}
+
+            {% if resource.category == 'Notes' %}
+                <div><span class="text-muted">PROF:</span> {{ d.professor }}</div>
+                <div><span class="text-muted">TOPICS:</span> {{ d.topic_coverage|truncatechars:30 }}</div>
+
+            {% elif resource.category == 'Assignment' %}
+                <div class="text-danger fw-bold"><span class="text-muted">DUE:</span> {{ d.deadline }}</div>
+                <div><span class="text-muted">MARKS:</span> {{ d.total_marks }}</div>
+
+            {% elif resource.category == 'Syllabus' %}
+                <div>{{ d.academic_year }} (Sem: {{ d.semester }})</div>
+
+            {% elif resource.category == 'Previous_paper' %}
+                <div>Year: {{ d.exam_year }} | Type: {{ d.exam_type }}</div>
+
+            {% elif resource.category == 'Reference' %}
+                <div>Author: {{ d.author }}</div>
+                {% if d.external_link %}
+                    <a href="{{ d.external_link }}" target="_blank" class="btn btn-sm btn-link p-0">External Link</a>
+                {% endif %}
+
+            {% elif resource.category == 'Other' %}
+                <div class="fst-italic">{{ d.details }}</div>
+            {% endif %}
+
+        {% endwith %}
+    {% else %}
+        <span class="text-muted">No additional details</span>
+    {% endif %}
+</td>
+
+            <td class="text-muted">{{ resource.uploaded_by }}</td>
+            <td class="text-muted">{{ resource.download_count }}</td>
+
+            <td>
+              {% if not request.user.role == 'Student' %}
+              <a href="{% url 'resourceUpdate' resource.id %}" class="btn btn-sm btn-outline-primary me-1">Edit</a>
+              <a href="{% url 'resourceDelete' resource.id %}" class="btn btn-sm btn-outline-danger me-1">Delete</a>
+              {% endif %}
+               <a href="{% url 'download-resource' resource.id %}" target="_blank" class="btn btn-sm btn-outline-info me-2">
+                    <i class="bi bi-eye"></i> Download
+                  </a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="11" class="text-center text-muted py-5">
+              <p class="mb-1 fs-5">No Resources found</p>
+              <small>Add your first Resource to get started</small>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p class="text-muted small mt-2">Total: {{ resources|length }} Resource(s)</p>
+</div>
+{% endblock %}

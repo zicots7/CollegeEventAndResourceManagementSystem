@@ -1,0 +1,63 @@
+{% extends 'Base.html' %}
+
+{% block title %}
+<title>Faculty</title>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4 mt-5 pt-4">
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold mb-0">Faculty</h2>
+    <a href="{% url 'AddFaculty' %}" class="btn btn-primary">+ Add Faculty</a>
+  </div>
+  <!-- Table Card -->
+  <div class="card shadow-sm">
+    <div class="card-body p-0">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-dark">
+          <tr>
+            <th>#</th>
+              <th>Name</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Department</th>
+            <th>Password</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for faculty in faculty %}
+          <tr>
+            <td class="text-muted">{{ forloop.counter }}</td>
+              <td class="fw-semibold">{{ faculty.first_name }} {{ faculty.last_name }}</td>
+            <td class="fw-semibold">{{ faculty.username }}</td>
+            <td class="text-muted">{{ faculty.email }}</td>
+              <td class="text-muted">{{ faculty.department }}</td>
+              <td class="text-muted">••••••••</td>
+              <td class="text-muted small">{{ faculty.created_date }}</td>
+             <td>
+               <a href="{% url 'EditFaculty' faculty.id %}" class="btn btn-sm btn-outline-primary me-1">Edit</a>
+              <a href="{% url 'DeleteFaculty' faculty.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
+             </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="7" class="text-center text-muted py-5">
+              <p class="mb-1 fs-5">No Faculty found</p>
+              <small>Add your first Faculty to get started</small>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Count -->
+  <p class="text-muted small mt-2">Total: {{ faculty|length }} Faculty(s)</p>
+
+</div>
+
+{% endblock %}

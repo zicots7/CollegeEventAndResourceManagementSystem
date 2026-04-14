@@ -1,0 +1,110 @@
+{% extends 'Base.html' %}
+{% block title %}
+<title>Add Resources</title>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-7 col-lg-6">
+      <!-- Back Button -->
+      <a href="{% url 'resourceList' %}" class="btn btn-outline-secondary btn-sm mb-3">
+        ← Resource List
+      </a>
+      <!-- Card -->
+      <div class="card shadow border-0 rounded-4">
+        <div class="card-header bg-primary text-white py-3 px-4 rounded-top-4">
+          <h5 class="mb-0 fw-bold">Add Resource</h5>
+        </div>
+        <div class="card-body p-4">
+     <form method="post" enctype="multipart/form-data" id="uploadForm">
+    {% csrf_token %}
+    <div class="card p-4 mb-4">
+        <h4>General Information</h4>
+        {{ form.as_p }}
+    </div>
+    <div class="card p-4 mb-4" id="dynamic-fields-container" style="display:none;">
+        <h4 id="dynamic-title">Specific Details</h4>
+        <hr><div class="extra-fields" id="fields-Other" style="display:none;">
+        <label>Extra Details</label>
+                    <textarea name="details" class="form-control"></textarea>
+        </div>
+        <div class="extra-fields" id="fields-Notes" style="display:none;">
+            <label>Professor Name</label>
+            <input type="text" name="professor" class="form-control">
+            <label>Format (Handwritten/Typed)</label>
+            <input type="text" name="format" class="form-control">
+            <label>Topic Coverage</label>
+            <textarea name="topic_coverage" class="form-control"></textarea>
+        </div>
+        <div class="extra-fields" id="fields-Assignment" style="display:none;">
+            <label>Deadline</label>
+            <input type="date" name="deadline" class="form-control">
+            <label>Total Marks</label>
+            <input type="number" name="total_marks" class="form-control">
+            <label>Lab Work?</label>
+            <select name="lab_work" class="form-control">
+                <option value="No">No</option>
+                <option value="Yes">Yes</option>
+            </select>
+        </div>
+        <div class="extra-fields" id="fields-Syllabus" style="display:none;">
+            <label>Academic Year</label>
+            <input type="text" name="academic_year" class="form-control" placeholder="e.g. 2024-25">
+            <label>Semester</label>
+            <input type="number" name="semester" class="form-control">
+        </div>
+
+        <div class="extra-fields" id="fields-Previous_paper" style="display:none;">
+            <label>Exam Year</label>
+            <input type="number" name="exam_year" class="form-control">
+            <label>Exam Type (Mid/End/Suppli)</label>
+            <input type="text" name="exam_type" class="form-control">
+        </div>
+
+        <div class="extra-fields" id="fields-Reference" style="display:none;">
+            <label>Author</label>
+            <input type="text" name="author" class="form-control">
+            <label>ISBN</label>
+            <input type="text" name="isbn" class="form-control">
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success w-100">Add Resource</button>
+</form>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Note: Django usually generates the ID as 'id_category' or 'id_resource_type'
+    const typeSelect = document.querySelector('#id_category');
+    const container = document.querySelector('#dynamic-fields-container');
+    const allExtraFields = document.querySelectorAll('.extra-fields');
+
+    typeSelect.addEventListener('change', function() {
+        const selectedValue = this.value;
+
+        // Hide the main container if no type is selected
+        if (!selectedValue) {
+            container.style.display = 'none';
+            return;
+        }
+
+        // Show main container and hide all sub-sections
+        container.style.display = 'block';
+        allExtraFields.forEach(div => div.style.display = 'none');
+
+        // Show the specific section for the selected type
+        const targetDiv = document.querySelector(`#fields-${selectedValue}`);
+        if (targetDiv) {
+            targetDiv.style.display = 'block';
+            document.getElementById('dynamic-title').innerText = selectedValue + " Details";
+        }
+    });
+});
+</script>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

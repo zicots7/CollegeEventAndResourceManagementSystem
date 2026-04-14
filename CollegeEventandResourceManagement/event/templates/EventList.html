@@ -1,0 +1,93 @@
+{% extends 'Base.html' %}
+{% block title %}
+<title>Events</title>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4 mt-5 pt-4">
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold mb-0">Events</h2>
+     {% if request.user.role != 'Student' %}
+    <a href="{% url 'addEvent' %}" class="btn btn-primary">+ Add Event</a>
+    {% endif %}
+  </div>
+  <!-- Table Card -->
+  <div class="card shadow-sm">
+    <div class="card-body p-0">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-dark">
+          <tr>
+            <th>#</th>
+              <th>Title</th>
+            <th>Description</th>
+              <th>Status</th>
+               <th>Type</th>
+            <th>Date</th>
+            <th>Venue</th>
+            <th>Capacity</th>
+            <th>Department</th>
+              <th>Created by</th>
+            <th>Created at</th>
+            {% if not user.role == 'Student' %}
+            <th>Reminder Sent</th>
+            {% endif %}
+              <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for event in events %}
+          <tr>
+            <td class="text-muted">{{ forloop.counter }}</td>
+            <td class="fw-semibold">{{ event.title }}</td>
+            <td class="fw-semibold">{{ event.description }} </td>
+            <td class="fw-semibold">{{ event.status }}</td>
+            <td class="fw-semibold">{{ event.type }}</td>
+            <td class="fw-semibold">{{ event.date }}</td>
+            <td class="fw-semibold">{{ event.venue }}</td>
+            <td class="text-muted">{{ event.capacity }}</td>
+              <td class="text-muted">{{ event.department }}</td>
+              <td class="text-muted">{{ event.created_by }}</td>
+              <td class="text-muted">{{ event.created_at }}</td>
+            {% if not request.user.role == 'Student' %}
+            <td class="text-muted">{{ event.reminder_sent }}</td>
+            {% endif %}
+            <td/>
+            {% if request.user.role == 'Admin' %}
+            <a href="{% url 'updateEvent' event.id %}" class="btn btn-sm btn-outline-primary me-1">Edit</a>
+            {% if not event.reminder_sent %}
+            <a href="{% url 'event_notification' event.id %}" class="btn btn-sm btn-outline-primary me-1">Push Reminder</a>
+            {% elif event.reminder_sent %}
+            <a href="{% url 'event_notification' event.id %}" class="btn btn-sm btn-outline-primary me-1">Stop Reminder</a>
+            {% endif %}
+            <a href="{% url 'deleteEvent' event.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
+            {% elif request.user.role == 'Faculty' %}
+             <a href="{% url 'updateEvent' event.id %}" class="btn btn-sm btn-outline-primary me-1">Edit</a>
+         {% elif request.user.role == 'Student' %}
+            <form action="{% url 'EventRegister' event.id %}" method="POST" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-sm btn-primary">Register Now</button>
+      </form>
+      <form action="{% url 'CancelRegistration' event.id %}" method="POST" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-sm btn-danger">Cancel Registration</button>
+      </form>
+  {% endif %}
+  </td>
+</tr>
+{% empty %}
+          <tr>
+            <td colspan="7" class="text-center text-muted py-5">
+              <p class="mb-1 fs-5">No Events found</p>
+              <small>Add your first Event to get started</small>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- Count -->
+  <p class="text-muted small mt-2">Total: {{ events|length }} Event(s)</p>
+</div>
+{% endblock %}
