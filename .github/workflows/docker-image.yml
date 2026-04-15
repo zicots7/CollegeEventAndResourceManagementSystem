@@ -15,15 +15,17 @@ jobs:
         run: |
           cat > .env << EOF
           SECRET_KEY=${{ secrets.SECRET_KEY }}
-          POSTGRES_DB=${{ secrets.POSTGRES_DB }}
-          POSTGRES_USER=${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}
+          POSTGRES_NAME=${{ secrets.POSTGRES_NAME }}
+          USER=${{ secrets.USER }}
+          PASSWORD=${{ secrets.PASSWORD }}
+          HOST=${{ secrets.HOST }}
+          PORT=${{ secrets.PORT }}
           MONGO_HOST=${{ secrets.MONGO_HOST }}
           MONGO_URI=${{ secrets.MONGO_URI }}
           MONGO_ROOT_USER=${{ secrets.MONGO_ROOT_USER }}
           MONGO_ROOT_PASSWORD=${{ secrets.MONGO_ROOT_PASSWORD }}
           MONGO_DB=${{ secrets.MONGO_DB }}
+          MONGO_COLLECTION=${{ secrets.MONGO_COLLECTION }}
           NAME_CLOUDINARY_DB=${{ secrets.NAME_CLOUDINARY_DB }}
           API_KEY_CLOUDINARY=${{ secrets.API_KEY_CLOUDINARY }}
           API_SECRET_CLOUDINARY=${{ secrets.API_SECRET_CLOUDINARY }}
