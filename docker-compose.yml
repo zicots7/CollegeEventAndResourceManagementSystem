@@ -4,10 +4,10 @@ networks:
 
 services:
   collegeeventnotification:
-    image: zico7/college_event_and_resource_manager:collegeeventnotification
     build: 
-      context: ./CollegeEventNotification/CollegeEventNotification
+      context: ./CollegeEventNotification/CollegeEventNotification/
       dockerfile: Dockerfile
+    image: zico7/college_event_and_resource_manager:collegeeventnotification
     env_file:
       - ./.env  
     ports:
@@ -17,10 +17,11 @@ services:
 
 
   collegeeventsandresourcesmanager:
-    image: zico7/college_event_and_resource_manager:collegeeventsandresourcesmanager
+
     build: 
-      context: ./CollegeEventandResourceManagement/CollegeEventandResourceManagement
+      context: ./CollegeEventandResourceManagement
       dockerfile: Dockerfile
+    image: zico7/college_event_and_resource_manager:collegeeventsandresourcesmanager
     command: sh -c "python manage.py migrate && gunicorn -b 0.0.0.0:9001 CollegeEventandResourceManagement.wsgi:application"
     ports:
       - "9001:9001"
@@ -37,6 +38,8 @@ services:
       - MONGO_ROOT_USER=${MONGO_ROOT_USER}
       - MONGO_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
       - MONGO_DB=${MONGO_DB}
+      - SPRING_URI_SCHEDULE=${SPRING_URI_SCHEDULE}
+      - SPRING_URI_CANCEL=${SPRING_URI_CANCEL}
       - NAME_CLOUDINARY_DB=${NAME_CLOUDINARY_DB}
       - API_KEY_CLOUDINARY=${API_KEY_CLOUDINARY}
       - API_SECRET_CLOUDINARY=${API_SECRET_CLOUDINARY}
