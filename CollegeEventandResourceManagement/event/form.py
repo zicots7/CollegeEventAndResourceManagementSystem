@@ -27,7 +27,8 @@ class EventForm(forms.ModelForm):
             'date': forms.DateInput(attrs={
                 'class': 'form-control',
                 'type': 'datetime-local',
-            }),
+
+            },format='%Y-%m-%dT%H:%M'),
             'department': forms.Select(
                 choices=[
                     ('MCA', 'MCA'),

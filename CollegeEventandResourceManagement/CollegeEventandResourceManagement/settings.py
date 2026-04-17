@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'resources',
     'user',
     'Dashboards',
+    'notification',
 ]
 
 MIDDLEWARE = [
@@ -117,8 +118,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-USE_TZ = True
+
 TIME_ZONE = 'Asia/Kolkata'
+
+USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/

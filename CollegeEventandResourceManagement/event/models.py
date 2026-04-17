@@ -44,3 +44,4 @@ class Events(models.Model):
         return self.registrations.count() >= self.capacity
     def spots_remaining(self):
         return self.capacity - self.registrations.count()
+

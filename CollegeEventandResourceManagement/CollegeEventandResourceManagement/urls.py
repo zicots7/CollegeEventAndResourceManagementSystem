@@ -26,4 +26,5 @@ urlpatterns = [
     path('registration/', include('registration.urls'), name='registration'),
     path('resources/', include('resources.urls'), name='resources'),
     path('downloadResources/',include('downloadResources.urls'),name='downloadResources'),
+    path('notifications/',include('notification.urls'),name='notifications'),
 ]
