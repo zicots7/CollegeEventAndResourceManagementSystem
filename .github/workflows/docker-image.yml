@@ -20,6 +20,9 @@ jobs:
           PASSWORD=${{ secrets.PASSWORD }}
           HOST=${{ secrets.HOST }}
           PORT=${{ secrets.PORT }}
+          SPRING_URI_SCHEDULE=${{ secrets.SPRING_URI_SCHEDULE }}
+          SPRING_URI_CANCEL=${{ secrets.SPRING_URI_CANCEL }}
+
           MONGO_HOST=${{ secrets.MONGO_HOST }}
           MONGO_URI=${{ secrets.MONGO_URI }}
           MONGO_ROOT_USER=${{ secrets.MONGO_ROOT_USER }}
