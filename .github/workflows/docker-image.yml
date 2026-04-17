@@ -44,10 +44,21 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build and Push with Compose
-        run: |
-          docker compose build
-          docker compose push
+      - name: Build & Push Spring Boot
+        uses: docker/build-push-action@v5
+        with:
+          context: ./CollegeEventNotification/CollegeEventNotification/
+          push: true
+          tags: |
+            zico7/college_event_and_resource_manager:collegeeventnotification
+
+      - name: Build & Push Django
+        uses: docker/build-push-action@v5
+        with:
+          context: ./CollegeEventandResourceManagement
+          push: true
+          tags: |
+            zico7/college_event_and_resource_manager:collegeeventsandresourcesmanager
 
       - name: Deploy to Render
         run: |
