@@ -55,10 +55,12 @@
             <td/>
             {% if request.user.role == 'Admin' %}
             <a href="{% url 'updateEvent' event.id %}" class="btn btn-sm btn-outline-primary me-1">Edit</a>
-            {% if not event.reminder_sent %}
+            {% if not event.status == 'Complete' and not event.status == 'Cancelled' %}
+              {% if not event.reminder_sent %}
             <a href="{% url 'event_notification' event.id %}" class="btn btn-sm btn-outline-primary me-1">Push Reminder</a>
             {% elif event.reminder_sent %}
             <a href="{% url 'event_notification' event.id %}" class="btn btn-sm btn-outline-primary me-1">Stop Reminder</a>
+              {% endif %}
             {% endif %}
             <a href="{% url 'deleteEvent' event.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
             {% elif request.user.role == 'Faculty' %}

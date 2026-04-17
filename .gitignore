@@ -1,4 +1,8 @@
-*.zip
+
+
 /env/
-*.env
-/.idea/
+.env
+
+.idea/
+CollegeEventNotification.zip
+

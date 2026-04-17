@@ -1,0 +1,82 @@
+networks:
+  CollegeEventsAndResourcesManager:
+    driver: bridge
+
+services:
+  collegeeventnotification:
+    build: 
+      context: ./CollegeEventNotification/CollegeEventNotification/
+      dockerfile: Dockerfile
+    image: zico7/college_event_and_resource_manager:collegeeventnotification
+    env_file:
+      - ./.env  
+    ports:
+      - "9000:9000"
+    networks:
+      - CollegeEventsAndResourcesManager
+
+
+  collegeeventsandresourcesmanager:
+
+    build: 
+      context: ./CollegeEventandResourceManagement
+      dockerfile: Dockerfile
+    image: zico7/college_event_and_resource_manager:collegeeventsandresourcesmanager
+    command: sh -c "python manage.py migrate && gunicorn -b 0.0.0.0:9001 CollegeEventandResourceManagement.wsgi:application"
+    ports:
+      - "9001:9001"
+    env_file:
+      - ./.env 
+    networks:
+      - CollegeEventsAndResourcesManager
+    environment:
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - SECRET_KEY=${SECRET_KEY}
+      - MONGO_COLLECTION=${MONGO_COLLECTION}
+      - MONGO_URI=${MONGO_URI}
+      - MONGO_HOST=${MONGO_HOST}
+      - MONGO_ROOT_USER=${MONGO_ROOT_USER}
+      - MONGO_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+      - MONGO_DB=${MONGO_DB}
+      - SPRING_URI_SCHEDULE=${SPRING_URI_SCHEDULE}
+      - SPRING_URI_CANCEL=${SPRING_URI_CANCEL}
+      - NAME_CLOUDINARY_DB=${NAME_CLOUDINARY_DB}
+      - API_KEY_CLOUDINARY=${API_KEY_CLOUDINARY}
+      - API_SECRET_CLOUDINARY=${API_SECRET_CLOUDINARY}
+    depends_on:
+      postgres_db:
+        condition: service_healthy
+      mongo_db:
+        condition: service_started
+
+  postgres_db:
+    image: postgres:18.3-alpine3.23
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${USER} -d ${POSTGRES_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    environment:
+      - POSTGRES_NAME=${POSTGRES_NAME}
+      - USER=${USER}
+      - PASSWORD=${PASSWORD}
+      - HOST=${HOST}
+    env_file:
+      - ./.env 
+    networks:
+      - CollegeEventsAndResourcesManager
+
+  mongo_db:
+    image: mongo:8.0
+    networks:
+      - CollegeEventsAndResourcesManager
+    env_file:
+      - ./.env 
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_DB} 
+
+volumes:
+  postgres_db:
+  mongo_db:
