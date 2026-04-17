@@ -22,7 +22,7 @@ services:
       context: ./CollegeEventandResourceManagement
       dockerfile: Dockerfile
     image: zico7/college_event_and_resource_manager:collegeeventsandresourcesmanager
-    command: sh -c "python manage.py migrate && gunicorn -b 0.0.0.0:9001 CollegeEventandResourceManagement.wsgi:application"
+    command: "gunicorn -b 0.0.0.0:9001 CollegeEventandResourceManagement.wsgi:application"
     ports:
       - "9001:9001"
     env_file:
