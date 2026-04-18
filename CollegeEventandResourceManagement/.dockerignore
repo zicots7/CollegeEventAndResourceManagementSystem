@@ -1,0 +1,8 @@
+*/.env/
+*.pbix
+*/__pycache__/
+/screenhots/
+.md
+*.env
+*/.idea/
+*.zip
