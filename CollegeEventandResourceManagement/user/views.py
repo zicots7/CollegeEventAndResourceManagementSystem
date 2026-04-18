@@ -40,7 +40,7 @@ def AddFaculty(request):
             user.role = 'Faculty'
             password = form.cleaned_data.get('password')
             if password:
-                user.set_password(form.cleaned_data['password'])
+                user.set_password(password)
             else:
                 user.set_password('faculty@123')
             user.save()
@@ -56,7 +56,7 @@ def AddFaculty(request):
 def EditFaculty(request,id):
     faculty = User.objects.get(id=id)
     if request.method == "POST":
-        form = StudentCreationForm(request.POST, instance=faculty)
+        form = FacultyCreationForm(request.POST, instance=faculty)
         if form.is_valid():
             form.save()
             # updating existing faculty fields separately
@@ -104,7 +104,7 @@ def AddStudent(request):
             user.role = 'Student'
             password = form.cleaned_data.get('password')
             if password:
-                user.set_password('password')
+                user.set_password(password)
             else:
                 user.set_password('student@123')
             user.save()
