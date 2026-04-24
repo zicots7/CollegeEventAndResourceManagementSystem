@@ -19,7 +19,7 @@ def turnOnNotification(eventName,eventTime,firstname,lastname,email,department,v
     formatted_date = new_dt.strftime('%Y-%m-%dT%H:%M:%S')
     nice_looking_time = local_dt.strftime('%B %d, %Y, %I:%M %p')
     body_data = {
-        'to': email,
+        'to':email,
         'subject': f" A gentle reminder for the event -- {eventName} -- .",
         'body': (f"Hello,\n"
                  f" {firstname} {lastname} \n from {department} department,\n\n\n\n"
@@ -30,7 +30,7 @@ def turnOnNotification(eventName,eventTime,firstname,lastname,email,department,v
     try:
         post_request = requests.post(
             spring_uri,
-            params=body_data,
+            data=body_data,
             timeout=5
         )
         response_dict = post_request.json()

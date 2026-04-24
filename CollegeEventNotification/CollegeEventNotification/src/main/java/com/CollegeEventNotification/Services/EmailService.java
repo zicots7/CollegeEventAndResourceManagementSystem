@@ -26,7 +26,7 @@ public class EmailService {
 
     public String scheduleEmail(String to , String subject, String body, LocalDateTime sendTime ){
        final String taskID = UUID.randomUUID().toString();
-        Instant instant = sendTime.atZone(ZoneId.systemDefault()).toInstant();
+        Instant instant = sendTime.atZone(ZoneId.of("Asia/Kolkata")).toInstant();
        ScheduledFuture<?> scheduleTask= taskScheduler.schedule(()->{
             try{
                 SimpleMailMessage message = new SimpleMailMessage();
