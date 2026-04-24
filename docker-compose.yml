@@ -59,7 +59,7 @@ services:
     environment:
       - POSTGRES_NAME=${POSTGRES_NAME}
       - USER=${USER}
-      - PASSWORD=${PASSWORD}
+      - POSTGRES_PASSWORD=${PASSWORD}
       - HOST=${HOST}
     env_file:
       - ./.env 

@@ -48,15 +48,15 @@
 
 | Admin side Overview | Student Side Overview | Faculty Side Overview |
 | :---: | :---: |
-| ![admin side ](./screenshots/header.png) | ![student Side](./screenshots/studentside.png) | ![faculty Side](./screenshots/facultyside.png) |
+| ![admin side ](./screenshots/header.png)|![student Side](./screenshots/studentside.png)|![faculty Side](./screenshots/facultyside.png)|
 | **Student List** | **faculty List** |
-| ![faculty List](./screenshots/students.png) | ![faculty List](./screenshots/faculty.png) |
+| ![faculty List](./screenshots/students.png) |![faculty List](./screenshots/faculty.png)|
 | **registration List** | **resources List** |
-| ![registration List](./screenshots/registration.png) | ![resources List](./screenshots/resources.png) |
+| ![registration List](./screenshots/registration.png)|![resources List](./screenshots/resources.png)|
 | **event list** | **Generated email notification (Spring Boot)** |
-| ![event list ](./screenshots/events.png) | ![email notification Screenshot](./screenshots/email.png) |
+| ![event list ](./screenshots/events.png)|![email notification Screenshot](./screenshots/email.png)|
  **PowerBi Dadhboard** |**Kubernetes Terminal** |
-![Dashboard Screenshot](Up coming) |  ![Kubernetes Terminal Screenshot](Upcoming) |
+![Dashboard Screenshot](Up coming)|![Kubernetes Terminal Screenshot](./screenshots/kubernetes.png)|
 
 
 ---

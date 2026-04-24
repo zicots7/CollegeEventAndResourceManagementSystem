@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: collegeeventnotification-deployment
+  namespace: college-events-and-resources-manager-namespace
+  labels:
+    app: collegeeventnotification
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: collegeeventnotification
+  template:
+    metadata:
+      labels:
+        app: collegeeventnotification
+    spec:
+      containers:
+        - name: collegeeventnotification
+          image: 'zico7/college_event_and_resource_manager:collegeeventnotification'
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: my-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: collegeeventnotification-service
+  namespace: college-events-and-resources-manager-namespace
+spec:
+  selector:
+    app: collegeeventnotification
+  ports:
+  - port: 8080
+    targetPort: 8080

@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: college-events-and-resources-manager-deployment
+  namespace: college-events-and-resources-manager-namespace
+  labels:
+    app: college-events-and-resources-manager
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: college-events-and-resources-manager
+  template:
+    metadata:
+      labels:
+        app: college-events-and-resources-manager
+    spec:
+      containers:
+        - name: college-events-and-resources-manager
+          image: 'zico7/college_event_and_resource_manager:collegeeventsandresourcesmanager'
+          ports:
+            - containerPort: 8081
+          env:
+          - name: MONGO_HOST
+            valueFrom:
+              secretKeyRef:
+                name: my-secret
+                key: MONGO_HOST
+          - name: MONGO_ROOT_USER
+            valueFrom:
+              secretKeyRef:
+                name: my-secret
+                key: MONGO_ROOT_USER
+          - name: MONGO_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: my-secret
+                key: MONGO_ROOT_PASSWORD
+          - name: MONGO_DB
+            valueFrom:
+              secretKeyRef:
+                name: my-secret
+                key: MONGO_DB
+          - name: POSTGRES_DB
+            valueFrom:
+              secretKeyRef:
+                name: my-secret
+                key: POSTGRES_NAME
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: my-secret
+                key: USER
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: my-secret
+                key: POSTGRES_PASSWORD
+          - name: POSTGRES_HOST
+            valueFrom:
+              secretKeyRef:
+                name: my-secret
+                key: PG_PORT
+          - name: SPRING_URI_SCHEDULE
+            valueFrom:
+              secretKeyRef:
+                name: my-secret
+                key: SPRING_URI_SCHEDULE
+          - name: SPRING_URI_CANCEL
+            valueFrom:
+              secretKeyRef:
+                name: my-secret
+                key: SPRING_URI_CANCEL
+          - name: SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                name: my-secret
+                key: SECRET_KEY
+          - name: ALLOWED_HOSTS
+            value: '*'
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: college-events-and-resources-manager-service
+  namespace: college-events-and-resources-manager-namespace
+spec:
+  selector:
+    app: college-events-and-resources-manager
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8081
+      nodePort: 30000
