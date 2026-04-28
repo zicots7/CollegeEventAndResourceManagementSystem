@@ -17,13 +17,15 @@ import java.util.concurrent.ScheduledFuture;
 @Service
 public class EmailService {
 
-    @Autowired
-    private TaskScheduler taskScheduler;
 
+    private final TaskScheduler taskScheduler;
+    private final JavaMailSender mailSender;
     private final Map<String, ScheduledFuture<?>> scheduledTasks = new ConcurrentHashMap<>();
     @Autowired
-    private JavaMailSender mailSender;
-
+    public EmailService(JavaMailSender mailSender, TaskScheduler taskScheduler) {
+        this.mailSender = mailSender;
+        this.taskScheduler = taskScheduler;
+    }
     public String scheduleEmail(String to , String subject, String body, LocalDateTime sendTime ){
        final String taskID = UUID.randomUUID().toString();
         Instant instant = sendTime.atZone(ZoneId.of("Asia/Kolkata")).toInstant();

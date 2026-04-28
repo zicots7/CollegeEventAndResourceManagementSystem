@@ -14,10 +14,12 @@ import java.util.Map;
 @RestController
 @RequestMapping("/mail")
 public class EmailServiceController {
+    private final EmailService emailService;
 
     @Autowired
-    private EmailService emailService;
-
+    public EmailServiceController(EmailService emailService) {
+        this.emailService = emailService;
+    }
     @PostMapping("/schedule")
     public ResponseEntity Schedule(
             @RequestParam String to,
