@@ -35,6 +35,7 @@
 **Database & DevOps:**
 - [PostgreSQL] - Relational data storage ensuring data integrity.
 - [MongoDB] - NoSQL data base storage to store unstructured resource details.
+- [Cloudinary] - Resource files like pdfs.
 - [Docker]- Containerization for seamless deployment.
 - [Kubernetes] - For Orchestration so for better Scalability .
 - [Git/Github] - For version control.
@@ -75,6 +76,7 @@ Follow these steps to get the project running locally on your machine.
 - JDK 24 + 
 - Postgresql 18 + version
 - MongoDB
+- Cloudinary account 
 - Maven build tool
 - Spring Boot
 - Python 3.10+
